@@ -8,6 +8,8 @@ locals {
     Commit      = var.committags
   }
 
-  # Merge standard tags with any extra resource-specific tags
-  all_tags = merge(local.standard_tags, var.extra_tags)
+  all_tags = merge(local.standard_tags, {
+    for k, v in yamldecode(file("./extra_tags.yaml")) :
+      k => v
+  })
 }
